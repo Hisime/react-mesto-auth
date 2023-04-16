@@ -45,6 +45,7 @@
 @import url("./blocks/popup/__photo-name/popup__photo-name.css");
 @import url("./blocks/popup/__image/popup__image.css");
 @import url("./blocks/popup/__info-message/popup__info-message.css");
+@import url("./blocks/popup/__info-icon/popup__info-icon.css");
 @import url("./blocks/authentication/authentication.css");
 @import url("./blocks/authentication/__title/authentication__title.css");
 @import url("./blocks/authentication/__button/authentication__button.css");

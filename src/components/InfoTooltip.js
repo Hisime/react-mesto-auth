@@ -9,10 +9,7 @@ function InfoTooltip({isTooltipShow, isTooltipSuccess, setTooltipShow}) {
     return (
         <div className={`popup ${isTooltipShow ? 'popup_opened' : ''}`}>
             <div className="popup__container popup__container_info">
-                {isTooltipSuccess ?
-                <img className="popup__info-icon" src={Accept} alt=""/>
-                :
-                <img className="popup__info-icon" src={Error} alt=""/>}
+                <div className="popup__info-icon" style={{backgroundImage: `url(${isTooltipSuccess ? Accept : Error})`}}></div>
                 <p className="popup__info-message">
                     {`${isTooltipSuccess ?
                         'Вы успешно зарегистрировались!'

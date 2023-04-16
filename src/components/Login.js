@@ -1,13 +1,10 @@
 import {useState} from "react";
-import {authorize} from "../utils/authApi";
-import {useNavigate} from "react-router-dom";
 
-function Login({handleLogin, setTooltipShow, setIsTooltipSuccess}) {
+function Login({handleLogin}) {
     const [formValue, setFormValue] = useState({
         email: '',
         password: ''
     })
-    const navigate = useNavigate()
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormValue({
@@ -20,21 +17,9 @@ function Login({handleLogin, setTooltipShow, setIsTooltipSuccess}) {
         if (!formValue.email || !formValue.password) {
             return;
         }
-
-        authorize(formValue.email, formValue.password)
-            .then(data => {
-                if (data.token) {
-                    handleLogin(data.token)
-                    navigate('/')
-                }
-            })
-            .catch(() => {
-                setIsTooltipSuccess(false);
-                setTooltipShow(true)
-            })
+        handleLogin(formValue.email, formValue.password)
     }
     return (
-        <>
         <form className="authentication" onSubmit={handleSubmit}>
             <h1 className="authentication__title">Вход</h1>
             <input
@@ -55,9 +40,7 @@ function Login({handleLogin, setTooltipShow, setIsTooltipSuccess}) {
             />
             <button className="authentication__button" type="submit">Войти</button>
         </form>
-        </>
-
-)
+    )
 }
 
 export default Login;
