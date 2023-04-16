@@ -8,10 +8,11 @@ import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import {Navigate, Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import {getUserEmail} from "../utils/authApi";
 
 function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -21,6 +22,13 @@ function App() {
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [userEmail, setUserEmail] = useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        tokenCheck()
+    }, [])
+
     useEffect(() => {
         api.getCards()
             .then((cards) => {
@@ -37,6 +45,32 @@ function App() {
                 console.log(err);
             });
     }, []);
+
+    const onLogin = (jwt) => {
+        localStorage.setItem('jwt', jwt)
+        setLoggedIn(true)
+        tokenCheck();
+    }
+
+    function onSignOut() {
+        localStorage.removeItem('jwt');
+        navigate('/sign-in')
+    }
+
+    const tokenCheck = () => {
+        const jwt = localStorage.getItem('jwt');
+        if (!jwt) {
+            return
+        }
+        getUserEmail(jwt)
+            .then(res => {
+                if (res) {
+                    setUserEmail(res.data.email)
+                    setLoggedIn(true)
+                    navigate('/')
+                }
+            })
+    }
 
     function handleUpdateUser(user) {
         api.editProfile(user)
@@ -125,11 +159,12 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
                 <div className="page__container">
-                    <Header/>
+                    <Header userEmail={userEmail} onSignOut={onSignOut}/>
                     <Routes>
                         <Route path="/sign-up" element={<Register/>}/>}/>
-                        <Route path="/sign-in" element={<Login/>}/>}/>
+                        <Route path="/sign-in" element={<Login handleLogin={onLogin}/>}/>}/>
                         <Route path={'/'} element={<ProtectedRoute loggedIn={loggedIn} element={
+                            () => (
                             <>
                                 <Main onEditAvatar={handleEditAvatarClick}
                                       onEditProfile={handleEditProfileClick}
@@ -147,7 +182,7 @@ function App() {
                                 <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}
                                                  onUpdateAvatar={handleUpdateAvatar}/>
                                 <ImagePopup card={selectedCard} onClose={closePhotoPopup}/>
-                            </>
+                            </>)
                         }/>}></Route>
                     </Routes>
                 </div>
