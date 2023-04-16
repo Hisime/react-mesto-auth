@@ -1,13 +1,12 @@
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import * as authApi from "../utils/authApi";
 
-function Register() {
+function Register({setTooltipShow, setIsTooltipSuccess}) {
     const [formValue, setFormValue] = useState({
         email: '',
         password: '',
     })
-    const [errorMessage, setErrorMessage] = useState('')
     const navigate = useNavigate()
 
     const handleChange = (e) => {
@@ -25,10 +24,14 @@ function Register() {
 
         authApi.register(email, password)
             .then(data => {
+                setIsTooltipSuccess(true);
+                setTooltipShow(true)
                 navigate('/sign-in')
             })
             .catch(err => {
-                setErrorMessage(err)
+                setIsTooltipSuccess(false);
+                setTooltipShow(true)
+                console.log(err);
             })
     }
 
@@ -52,7 +55,10 @@ function Register() {
                 onChange={handleChange}
             />
             <button className="authentication__button" type="submit">Зарегистрироваться</button>
-            <div className="authentication__tip">Уже зарегистрированы? Войти</div>
+            <p className="authentication__tip">
+                Уже зарегистрированы?
+                <Link className="authentication__link" to="/sign-in">Войти</Link>
+            </p>
         </form>
     )
 }

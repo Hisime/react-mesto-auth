@@ -2,22 +2,25 @@ import React from "react";
 import Error from '../../src/images/cancel.svg';
 import Accept from '../../src/images/accept.svg';
 
-function InfoTooltip(isSuccess) {
+function InfoTooltip({isTooltipShow, isTooltipSuccess, setTooltipShow}) {
+    function handleCloseClick() {
+        setTooltipShow(false)
+    }
     return (
-        <div className="popup">
+        <div className={`popup ${isTooltipShow ? 'popup_opened' : ''}`}>
             <div className="popup__container popup__container_info">
-                {isSuccess ?
+                {isTooltipSuccess ?
                 <img className="popup__info-icon" src={Accept} alt=""/>
                 :
                 <img className="popup__info-icon" src={Error} alt=""/>}
                 <p className="popup__info-message">
-                    {`${isSuccess ?
+                    {`${isTooltipSuccess ?
                         'Вы успешно зарегистрировались!'
                         :
                         'Что-то пошло не так! Попробуйте ещё раз.'
                         }`}
                         </p>
-                <button className="popup__close" type="button" aria-label="Закрыть"></button>
+                <button className="popup__close" type="button" aria-label="Закрыть" onClick={handleCloseClick}></button>
             </div>
         </div>
     )

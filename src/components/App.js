@@ -8,11 +8,12 @@ import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
+import {Route, Routes, useNavigate} from 'react-router-dom';
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
 import {getUserEmail} from "../utils/authApi";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -23,6 +24,8 @@ function App() {
     const [cards, setCards] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState('');
+    const [isTooltipShow, setTooltipShow] = useState(false);
+    const [isTooltipSuccess, setIsTooltipSuccess] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -161,8 +164,8 @@ function App() {
                 <div className="page__container">
                     <Header userEmail={userEmail} onSignOut={onSignOut}/>
                     <Routes>
-                        <Route path="/sign-up" element={<Register/>}/>}/>
-                        <Route path="/sign-in" element={<Login handleLogin={onLogin}/>}/>}/>
+                        <Route path="/sign-up" element={<Register setTooltipShow={setTooltipShow} setIsTooltipSuccess={setIsTooltipSuccess} />}/>}/>
+                        <Route path="/sign-in" element={<Login setTooltipShow={setTooltipShow} setIsTooltipSuccess={setIsTooltipSuccess} handleLogin={onLogin}/>}/>}/>
                         <Route path={'/'} element={<ProtectedRoute loggedIn={loggedIn} element={
                             () => (
                             <>
@@ -185,6 +188,7 @@ function App() {
                             </>)
                         }/>}></Route>
                     </Routes>
+                    <InfoTooltip isTooltipShow={isTooltipShow} isTooltipSuccess={isTooltipSuccess} setTooltipShow={setTooltipShow}/>
                 </div>
             </div>
         </CurrentUserContext.Provider>

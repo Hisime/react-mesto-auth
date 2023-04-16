@@ -49,3 +49,5 @@
 @import url("./blocks/authentication/__title/authentication__title.css");
 @import url("./blocks/authentication/__button/authentication__button.css");
 @import url("./blocks/authentication/__input/authentication__input.css");
+@import url("./blocks/authentication/__tip/authentication__tip.css");
+@import url("./blocks/authentication/__link/authentication__link.css");

@@ -1,9 +1,8 @@
 import {useState} from "react";
-import InfoTooltip from "./InfoTooltip";
 import {authorize} from "../utils/authApi";
 import {useNavigate} from "react-router-dom";
 
-function Login({handleLogin}) {
+function Login({handleLogin, setTooltipShow, setIsTooltipSuccess}) {
     const [formValue, setFormValue] = useState({
         email: '',
         password: ''
@@ -29,6 +28,10 @@ function Login({handleLogin}) {
                     navigate('/')
                 }
             })
+            .catch(() => {
+                setIsTooltipSuccess(false);
+                setTooltipShow(true)
+            })
     }
     return (
         <>
@@ -52,7 +55,6 @@ function Login({handleLogin}) {
             />
             <button className="authentication__button" type="submit">Войти</button>
         </form>
-        <InfoTooltip/>
         </>
 
 )
