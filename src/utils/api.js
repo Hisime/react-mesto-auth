@@ -68,9 +68,8 @@ export class Api {
 }
 
 export default new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-60',
+  baseUrl: 'https://api.hisime.mesto.nomoredomains.monster',
   headers: {
-    authorization: '8a408fa5-d573-4a4b-999d-ef2dcd8b62ea',
     'Content-Type': 'application/json'
   }
 });
