@@ -69,8 +69,8 @@ function App() {
     const onLogin = (email, password) => {
         authorize(email, password)
             .then(data => {
-                if (data.token) {
-                    localStorage.setItem('jwt', data.token)
+                if (data._id) {
+                    localStorage.setItem('id', data._id)
                     setLoggedIn(true)
                     setUserEmail(email)
                     navigate('/')
@@ -83,16 +83,16 @@ function App() {
     }
 
     function onSignOut() {
-        localStorage.removeItem('jwt');
+        localStorage.removeItem('id');
         navigate('/sign-in')
     }
 
     const tokenCheck = () => {
-        const jwt = localStorage.getItem('jwt');
-        if (!jwt) {
+        const id = localStorage.getItem('id');
+        if (!id) {
             return
         }
-        getUserEmail(jwt)
+        getUserEmail()
             .then(res => {
                 if (res) {
                     setUserEmail(res.data.email)

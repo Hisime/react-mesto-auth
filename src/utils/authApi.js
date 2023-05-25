@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.hisime.mesto.nomoredomains.monster';
+export const BASE_URL = 'http://localhost:3000';
 
 const getRequestResponse = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
 
@@ -19,18 +19,19 @@ export const authorize = (email, password) => {
         headers: {
             'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
     })
         .then(getRequestResponse)
 };
 
-export const getUserEmail = (token) => {
+export const getUserEmail = () => {
     return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
         },
+        credentials: 'include',
     })
         .then(getRequestResponse)
 };
